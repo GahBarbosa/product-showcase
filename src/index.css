@@ -2,8 +2,8 @@
 
 :root {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  color: #fff;
-  background: #100b1a;
+  color: #f2eff7;
+  background: #09090c;
 }
 
 * {
@@ -36,8 +36,29 @@ button {
   padding: 2rem;
 }
 
+.intro-layer {
+  background: #09090c;
+  opacity: 1;
+  transition: opacity 700ms cubic-bezier(.65, 0, .35, 1);
+}
+
+.intro-layer.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.outro-layer {
+  background: #09090c;
+  animation: outro-cover 850ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.outro-layer .hero {
+  opacity: 0;
+  animation: outro-content 650ms 430ms ease both;
+}
+
 .hero {
-  max-width: 46rem;
+  max-width: 38rem;
   animation: enter .7s ease both;
 }
 
@@ -45,40 +66,82 @@ button {
 .tour-copy h2,
 .detail-card h2 {
   margin: .6rem 0 1rem;
-  font-size: clamp(2.7rem, 7vw, 6.4rem);
-  line-height: .96;
-  letter-spacing: -.06em;
+  font-size: clamp(2.35rem, 6vw, 5.2rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.045em;
 }
 
 .hero p,
 .tour-copy p,
 .detail-card p {
-  color: rgb(226 218 238 / .8);
-  font-size: 1.05rem;
-  line-height: 1.55;
+  color: rgb(221 218 228 / .6);
+  font-size: .94rem;
+  font-weight: 300;
+  line-height: 1.65;
 }
 
 .eyebrow {
-  color: #d8c4ff !important;
-  font-size: .72rem !important;
-  font-weight: 700;
-  letter-spacing: .15em;
+  color: rgb(185 170 207 / .68) !important;
+  font-size: .64rem !important;
+  font-weight: 500;
+  letter-spacing: .2em;
   text-transform: uppercase;
 }
 
 .primary,
 .skip {
-  border: 0;
+  border: 1px solid rgb(255 255 255 / .2);
   cursor: pointer;
-  color: #160c23;
-  background: #fff;
-  font-weight: 700;
+  color: rgb(255 255 255 / .9);
+  background: rgb(255 255 255 / .05);
+  font-weight: 500;
+  letter-spacing: .03em;
+  transition: background 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.music-control {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 20;
+  border: 1px solid rgb(255 255 255 / .14);
+  border-radius: 999px;
+  padding: .55rem .8rem;
+  color: rgb(255 255 255 / .65);
+  background: rgb(9 9 12 / .5);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-size: .68rem;
+  letter-spacing: .06em;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.music-control:hover {
+  border-color: rgb(255 255 255 / .38);
+  color: #fff;
+}
+
+.primary:hover,
+.skip:hover {
+  border-color: rgb(255 255 255 / .48);
+  background: rgb(255 255 255 / .12);
+  transform: translateY(-2px);
 }
 
 .primary {
   margin-top: 2rem;
   border-radius: 999px;
-  padding: .9rem 1.3rem;
+  padding: .8rem 1.15rem;
+  font-size: .82rem;
+}
+
+.intro-cta {
+  animation: ethereal-pulse 2.8s ease-in-out infinite;
+}
+
+.intro-cta:disabled {
+  animation: none;
 }
 
 .tour-copy {
@@ -93,6 +156,28 @@ button {
   font-size: clamp(2.4rem, 5vw, 4.8rem);
 }
 
+.tour-progress {
+  position: absolute;
+  right: clamp(1.5rem, 8vw, 8rem);
+  bottom: clamp(2rem, 10vh, 7rem);
+  width: min(18rem, 28vw);
+  height: 1px;
+  overflow: hidden;
+  background: rgb(255 255 255 / .16);
+}
+
+.tour-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: rgb(185 170 207 / .8);
+  animation-name: tour-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
 .skip {
   pointer-events: auto;
   position: absolute;
@@ -100,8 +185,9 @@ button {
   right: 2rem;
   padding: .7rem 1rem;
   border-radius: 999px;
-  background: rgb(255 255 255 / .12);
-  color: #fff;
+  background: rgb(255 255 255 / .04);
+  color: rgb(255 255 255 / .72);
+  font-size: .76rem;
 }
 
 .side-menu {
@@ -113,7 +199,7 @@ button {
   padding: 1.1rem;
   border: 1px solid rgb(255 255 255 / .16);
   border-radius: 1rem;
-  background: rgb(18 11 30 / .58);
+  background: rgb(13 13 18 / .72);
   backdrop-filter: blur(12px);
 }
 
@@ -132,8 +218,31 @@ button {
 }
 
 .side-menu button span {
-  color: #d8c4ff;
+  color: #b9aacf;
   font-size: .75rem;
+}
+
+.side-menu button.is-viewed {
+  color: rgb(255 255 255 / .5);
+}
+
+.side-menu-check {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  margin-left: auto;
+  border: 1px solid rgb(216 196 255 / .45);
+  border-radius: 50%;
+  color: #b9aacf;
+  font-size: .72rem;
+}
+
+.exploration-progress {
+  margin: .25rem 0 .75rem;
+  color: rgb(255 255 255 / .52);
+  font-size: .7rem;
+  letter-spacing: .06em;
 }
 
 .explore-hint {
@@ -142,6 +251,40 @@ button {
   bottom: 2rem;
   color: rgb(255 255 255 / .62);
   font-size: .82rem;
+}
+
+.interaction-guide {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  gap: .55rem;
+  width: min(18rem, calc(100vw - 3rem));
+  padding: 1rem 1.25rem;
+  /* border: 1px solid rgb(255 255 255 / .1); */
+  /* border-radius: 999px; */
+  background: rgb(9 9 12 / .62);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 .5rem 2rem rgb(0 0 0 / .12);
+  transform: translate(-50%, -50%);
+  color: rgb(255 255 255 / .92);
+  text-align: center;
+  animation: guide-float 2.8s ease-in-out infinite;
+}
+
+.interaction-guide svg {
+  width: 2rem;
+  height: 2rem;
+  opacity: .85;
+}
+
+.interaction-guide p {
+  margin: 0;
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .13em;
+  text-transform: uppercase;
 }
 
 .detail-card {
@@ -153,7 +296,7 @@ button {
   padding: 2rem;
   border: 1px solid rgb(255 255 255 / .16);
   border-radius: 1.25rem;
-  background: rgb(18 11 30 / .78);
+  background: rgb(13 13 18 / .86);
   backdrop-filter: blur(18px);
   animation: enter .45s ease both;
 }
@@ -179,6 +322,12 @@ button {
 .hotspot span {
   font-size: .55rem;
   font-weight: 800;
+}
+
+.hotspot.is-viewed {
+  border-color: #b9aacf;
+  background: #b9aacf;
+  animation: none;
 }
 
 .loader {
@@ -210,6 +359,16 @@ button {
   }
 }
 
+@keyframes outro-cover {
+  from { clip-path: circle(0% at 50% 50%); }
+  to { clip-path: circle(150% at 50% 50%); }
+}
+
+@keyframes outro-content {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes pulse {
   50% {
     transform: scale(1.12);
@@ -227,6 +386,31 @@ button {
   }
 }
 
+@keyframes tour-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ethereal-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(216 196 255 / 0), 0 0 18px rgb(216 196 255 / .06);
+  }
+
+  50% {
+    box-shadow: 0 0 0 .45rem rgb(216 196 255 / .05), 0 0 28px rgb(216 196 255 / .13);
+  }
+}
+
+@keyframes guide-float {
+  50% {
+    opacity: .55;
+    transform: translate(-50%, calc(-50% - .35rem));
+  }
+}
+
 @media (max-width: 640px) {
   .side-menu {
     top: 1rem;
@@ -238,6 +422,11 @@ button {
     right: 1rem;
   }
 
+  .music-control {
+    bottom: 1rem;
+    left: 1rem;
+  }
+
   .explore-hint {
     right: 1rem;
     bottom: 1rem;
@@ -247,5 +436,12 @@ button {
     left: 1.5rem;
     right: 1.5rem;
     width: auto;
+  }
+
+  .tour-progress {
+    left: 1.5rem;
+    right: auto;
+    bottom: 1.5rem;
+    width: calc(100vw - 3rem);
   }
 }

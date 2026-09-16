@@ -15,6 +15,7 @@ function HotspotMarker({ hotspot }: { hotspot: Hotspot }) {
   const group = useRef<Group>(null);
   const camera = useThree((state) => state.camera);
   const openHotspot = usePresentationStore((state) => state.openHotspot);
+  const isViewed = usePresentationStore((state) => state.viewedHotspotIds.includes(hotspot.id));
   const [isFacingCamera, setIsFacingCamera] = useState(false);
 
   useFrame(() => {
@@ -28,7 +29,7 @@ function HotspotMarker({ hotspot }: { hotspot: Hotspot }) {
 
   return <group ref={group} position={hotspot.position} visible={isFacingCamera}>
     <Html center occlude>
-      <button className="hotspot" onPointerDown={(event) => event.stopPropagation()} onClick={() => openHotspot(hotspot.id)} aria-label={`Ver ${hotspot.title}`}><span>{hotspot.label}</span></button>
+      <button className={`hotspot ${isViewed ? "is-viewed" : ""}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => openHotspot(hotspot.id)} aria-label={`Ver ${hotspot.title}`}><span>{isViewed ? "✓" : hotspot.label}</span></button>
     </Html>
   </group>;
 }

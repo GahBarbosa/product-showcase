@@ -3,6 +3,7 @@ import type { CameraControllerHandle } from "./components/scene/CameraRig";
 import Scene from "./components/scene/Scene";
 import { tourSteps } from "./data/tourSteps";
 import PresentationOverlay from "./components/ui/PresentationOverlay";
+import MusicControl from "./components/ui/MusicControl";
 import { usePresentationStore } from "./app/presentationStore";
 
 export default function App() {
@@ -24,9 +25,10 @@ export default function App() {
   }, [activeHotspotId, phase]);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#100b1a] text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#09090c] text-white">
       <Scene cameraRef={cameraRef} phase={phase} />
       <PresentationOverlay />
+      <MusicControl />
     </main>
   );
 }
