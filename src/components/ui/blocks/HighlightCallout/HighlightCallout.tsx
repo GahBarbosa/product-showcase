@@ -1,6 +1,5 @@
-import Circle from "./Circle";
-import Connector from "./Connector";
 import Callout from "./Callout";
+import Connector from "./Connector";
 
 interface Props {
   origin: {
@@ -13,6 +12,8 @@ interface Props {
     y: number;
   };
 
+  width?: number;
+
   title: string;
   description: string;
 }
@@ -20,6 +21,7 @@ interface Props {
 export default function HighlightCallout({
   origin,
   text,
+  width = 320,
   title,
   description,
 }: Props) {
@@ -31,16 +33,16 @@ export default function HighlightCallout({
         top: origin.y,
       }}
     >
-      <Circle />
-
       <Connector
         x={text.x}
         y={text.y}
+        topWidth={width}
       />
 
       <Callout
         x={text.x}
         y={text.y}
+        width={width}
         title={title}
         description={description}
       />

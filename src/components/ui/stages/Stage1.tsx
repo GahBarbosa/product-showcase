@@ -5,13 +5,18 @@ export default function Stage1() {
     <HighlightCallout
       origin={{
         x: "60%",
-        y: "42%",
+        y: "40%"
       }}
+
       text={{
         x: 300,
-        y: -140,
+        y: 100
       }}
+
+      width={300}
+
       title="Chocolate Belga"
+
       description="Cobertura artesanal feita com ingredientes selecionados."
     />
   );

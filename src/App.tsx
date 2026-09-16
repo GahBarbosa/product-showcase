@@ -1,62 +1,32 @@
-import { useRef, useState } from "react";
-
+import { useEffect, useRef } from "react";
+import type { CameraControllerHandle } from "./components/scene/CameraRig";
 import Scene from "./components/scene/Scene";
-import { showcaseStages } from "./components/scene/showcaseStages";
-import StageRenderer from "./components/ui/StageRenderer";
+import { tourSteps } from "./data/tourSteps";
+import PresentationOverlay from "./components/ui/PresentationOverlay";
+import { usePresentationStore } from "./app/presentationStore";
 
 export default function App() {
-  const cameraRef = useRef<any>(null);
+  const cameraRef = useRef<CameraControllerHandle>(null);
+  const phase = usePresentationStore((state) => state.phase);
+  const tourStep = usePresentationStore((state) => state.tourStep);
+  const activeHotspotId = usePresentationStore((state) => state.activeHotspotId);
+  const advanceTour = usePresentationStore((state) => state.advanceTour);
 
-  const [stage, setStage] = useState(0);
+  useEffect(() => {
+    if (phase !== "tour") return;
+    cameraRef.current?.moveTo(tourSteps[tourStep].camera);
+    const timer = window.setTimeout(advanceTour, tourSteps[tourStep].duration);
+    return () => window.clearTimeout(timer);
+  }, [advanceTour, phase, tourStep]);
 
-  const nextStage = () => {
-    if (stage >= showcaseStages.length - 1) return;
-
-    const next = stage + 1;
-
-    cameraRef.current?.goTo(next);
-    setStage(next);
-  };
-
-  const previousStage = () => {
-    if (stage <= 0) return;
-
-    const previous = stage - 1;
-
-    cameraRef.current?.goTo(previous);
-    setStage(previous);
-  };
+  useEffect(() => {
+    if (phase === "hotspot" && activeHotspotId) cameraRef.current?.focusHotspot(activeHotspotId);
+  }, [activeHotspotId, phase]);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-violet-400 text-white">
-      <Scene cameraRef={cameraRef} />
-
-      <StageRenderer stage={stage} />
-
-      {/* Área esquerda */}
-      <div
-        className="absolute inset-y-0 left-0 z-20 w-1/2 cursor-w-resize"
-        onClick={previousStage}
-      />
-
-      {/* Área direita */}
-      <div
-        className="absolute inset-y-0 right-0 z-20 w-1/2 cursor-e-resize"
-        onClick={nextStage}
-      />
-
-      {/* Indicadores */}
-      {stage > 0 && (
-        <div className="pointer-events-none absolute left-6 top-1/2 z-30 -translate-y-1/2 text-4xl text-white/70 animate-arrow-left">
-          &lt;
-        </div>
-      )}
-
-      {stage < showcaseStages.length - 1 && (
-        <div className="pointer-events-none absolute right-6 top-1/2 z-30 -translate-y-1/2 text-4xl text-white/70 animate-arrow-right">
-          &gt;
-        </div>
-      )}
+    <main className="relative h-screen w-screen overflow-hidden bg-[#100b1a] text-white">
+      <Scene cameraRef={cameraRef} phase={phase} />
+      <PresentationOverlay />
     </main>
   );
 }

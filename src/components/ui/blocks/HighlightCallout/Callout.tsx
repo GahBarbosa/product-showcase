@@ -1,7 +1,7 @@
 interface Props {
   x: number;
   y: number;
-
+  width: number;
   title: string;
   description: string;
 }
@@ -9,6 +9,7 @@ interface Props {
 export default function Callout({
   x,
   y,
+  width,
   title,
   description,
 }: Props) {
@@ -16,19 +17,16 @@ export default function Callout({
     <div
       className="absolute"
       style={{
-        left: x,
-        top: y,
+        left: x > 0 ? x : x - width,
+        top: y + 24,
+        width,
       }}
     >
-
-      {/* Linha vertical */}
-      <div className="mr-6 w-auto h-0.5 bg-white" />
-
-      <h2 className="text-6xl font-bold">
+      <h2 className="text-5xl font-bold">
         {title}
       </h2>
 
-      <p className="mt-5 max-w-sm text-xl text-neutral-300">
+      <p className="mt-4 text-lg text-neutral-300">
         {description}
       </p>
     </div>
